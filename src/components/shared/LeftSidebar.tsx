@@ -52,10 +52,12 @@ const LeftSidebar = () => {
             const isActive = pathname === link.route;
 
             return (
-              <li className={`leftsidebar-link group ${isActive && 'bg-primary-500'}`}>
+              <li
+                className={`leftsidebar-link group ${isActive && 'bg-primary-500'}`}
+                key={link.label}
+              >
                 <NavLink
                   to={link.route}
-                  key={link.label}
                   className="flex gap-4 items-center p-4"
                 >
                   <img
