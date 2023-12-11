@@ -18,13 +18,14 @@ import { Models } from 'appwrite';
 import { useUserContext } from '@/context/AuthContext';
 import { useToast } from '../ui/use-toast';
 import { useNavigate } from 'react-router-dom';
+import { useCreatePost } from '@/lib/react-query/queriesAndMutations';
 
 type PostFormProps = {
   post?: Models.Document;
 };
 
 const PostForm = ({ post }: PostFormProps) => {
-  const { mutateAsync: createPost, isPending: isLoadingCreate } = useCreatePost();
+  const { mutateAsync: createPost } = useCreatePost();
   const { user } = useUserContext();
   const { toast } = useToast();
   const navigate = useNavigate();
