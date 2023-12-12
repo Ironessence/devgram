@@ -1,8 +1,8 @@
 import { useUserContext } from '@/context/AuthContext';
 import { multiFormatDateString } from '@/lib/utils';
 import { Models } from 'appwrite';
-import { link } from 'fs';
 import { Link } from 'react-router-dom';
+import PostStats from './PostStats';
 
 type PostCardProps = {
   post: Models.Document;
@@ -68,6 +68,11 @@ const PostCard = ({ post }: PostCardProps) => {
           alt="post image"
         />
       </Link>
+
+      <PostStats
+        post={post}
+        userId={user.id}
+      />
     </div>
   );
 };
