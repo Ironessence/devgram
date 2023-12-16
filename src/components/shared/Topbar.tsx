@@ -1,19 +1,18 @@
-import { Link, useNavigate } from 'react-router-dom';
-import { Button } from '../ui/button';
-import { useSignOutAccount } from '@/lib/react-query/queriesAndMutations';
 import { useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+
+import { Button } from '../ui/button';
 import { useUserContext } from '@/context/AuthContext';
+import { useSignOutAccount } from '@/lib/react-query/queries';
 
 const Topbar = () => {
-  const { mutate: signOut, isSuccess } = useSignOutAccount();
   const navigate = useNavigate();
   const { user } = useUserContext();
+  const { mutate: signOut, isSuccess } = useSignOutAccount();
 
   useEffect(() => {
-    if (isSuccess) {
-      navigate(0);
-    }
-  }, [isSuccess, navigate]);
+    if (isSuccess) navigate(0);
+  }, [isSuccess]);
 
   return (
     <section className="topbar">
@@ -23,12 +22,13 @@ const Topbar = () => {
           className="flex gap-3 items-center"
         >
           <img
-            src="/assets/images/logo.svg"
+            src="/assets/images/devgram-logo.png"
             alt="logo"
             width={130}
             height={325}
           />
         </Link>
+
         <div className="flex gap-4">
           <Button
             variant="ghost"
@@ -45,7 +45,7 @@ const Topbar = () => {
             className="flex-center gap-3"
           >
             <img
-              src={user.imageUrl || '/assets/icons/profile-placeholdeer.svg'}
+              src={user.imageUrl || '/assets/icons/profile-placeholder.svg'}
               alt="profile"
               className="h-8 w-8 rounded-full"
             />
