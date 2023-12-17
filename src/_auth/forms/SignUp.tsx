@@ -20,7 +20,7 @@ import { useCreateUserAccount, useSignInAccount } from '@/lib/react-query/querie
 import { SignupValidation } from '@/lib/validation';
 import { useUserContext } from '@/context/AuthContext';
 
-const SignUpForm = () => {
+const SignUp = () => {
   const { toast } = useToast();
   const navigate = useNavigate();
   const { checkAuthUser, isLoading: isUserLoading } = useUserContext();
@@ -196,4 +196,4 @@ const SignUpForm = () => {
   );
 };
 
-export default SignUpForm;
+export default SignUp;

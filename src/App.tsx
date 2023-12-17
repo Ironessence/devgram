@@ -15,7 +15,7 @@ import RootLayout from './_root/RootLayout';
 import { Toaster } from '@/components/ui/toaster';
 import './globals.css';
 import SignInForm from './_auth/forms/SignInForm';
-import SignUpForm from './_auth/forms/SignupForm';
+import SignUp from './_auth/forms/SignUp';
 
 const App = () => {
   return (
@@ -29,7 +29,7 @@ const App = () => {
           />
           <Route
             path="/sign-up"
-            element={<SignUpForm />}
+            element={<SignUp />}
           />
         </Route>
 
