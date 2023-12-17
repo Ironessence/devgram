@@ -1,10 +1,11 @@
-import { useEffect, useState } from "react";
-import { useInView } from "react-intersection-observer";
+import { useEffect, useState } from 'react';
+import { useInView } from 'react-intersection-observer';
 
-import { Input } from "@/components/ui";
-import useDebounce from "@/hooks/useDebounce";
-import { GridPostList, Loader } from "@/components/shared";
-import { useGetPosts, useSearchPosts } from "@/lib/react-query/queries";
+import { Input } from '@/components/ui';
+import useDebounce from '@/hooks/useDebounce';
+import { GridPostList, Loader } from '@/components/shared';
+import { useGetPosts, useSearchPosts } from '@/lib/react-query/queries';
+import { Models } from 'appwrite';
 
 export type SearchResultProps = {
   isSearchFetching: boolean;
@@ -17,9 +18,7 @@ const SearchResults = ({ isSearchFetching, searchedPosts }: SearchResultProps) =
   } else if (searchedPosts && searchedPosts.documents.length > 0) {
     return <GridPostList posts={searchedPosts.documents} />;
   } else {
-    return (
-      <p className="text-light-4 mt-10 text-center w-full">No results found</p>
-    );
+    return <p className="text-light-4 mt-10 text-center w-full">No results found</p>;
   }
 };
 
@@ -27,7 +26,7 @@ const Explore = () => {
   const { ref, inView } = useInView();
   const { data: posts, fetchNextPage, hasNextPage } = useGetPosts();
 
-  const [searchValue, setSearchValue] = useState("");
+  const [searchValue, setSearchValue] = useState('');
   const debouncedSearch = useDebounce(searchValue, 500);
   const { data: searchedPosts, isFetching: isSearchFetching } = useSearchPosts(debouncedSearch);
 
@@ -44,9 +43,9 @@ const Explore = () => {
       </div>
     );
 
-  const shouldShowSearchResults = searchValue !== "";
-  const shouldShowPosts = !shouldShowSearchResults && 
-    posts.pages.every((item) => item.documents.length === 0);
+  const shouldShowSearchResults = searchValue !== '';
+  const shouldShowPosts =
+    !shouldShowSearchResults && posts.pages.every((item) => item?.documents.length === 0);
 
   return (
     <div className="explore-container">
@@ -96,13 +95,19 @@ const Explore = () => {
           <p className="text-light-4 mt-10 text-center w-full">End of posts</p>
         ) : (
           posts.pages.map((item, index) => (
-            <GridPostList key={`page-${index}`} posts={item.documents} />
+            <GridPostList
+              key={`page-${index}`}
+              posts={item?.documents as unknown as Models.Document[]}
+            />
           ))
         )}
       </div>
 
       {hasNextPage && !searchValue && (
-        <div ref={ref} className="mt-10">
+        <div
+          ref={ref}
+          className="mt-10"
+        >
           <Loader />
         </div>
       )}

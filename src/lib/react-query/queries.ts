@@ -1,11 +1,6 @@
-import {
-  useQuery,
-  useMutation,
-  useQueryClient,
-  useInfiniteQuery,
-} from "@tanstack/react-query";
+import { useQuery, useMutation, useQueryClient, useInfiniteQuery } from '@tanstack/react-query';
 
-import { QUERY_KEYS } from "@/lib/react-query/queryKeys";
+import { QUERY_KEYS } from '@/lib/react-query/queryKeys';
 import {
   createUserAccount,
   signInAccount,
@@ -25,8 +20,8 @@ import {
   searchPosts,
   savePost,
   deleteSavedPost,
-} from "@/lib/appwrite/api";
-import { INewPost, INewUser, IUpdatePost, IUpdateUser } from "@/types";
+} from '@/lib/appwrite/api';
+import { INewPost, INewUser, IUpdatePost, IUpdateUser } from '@/types';
 
 // ============================================================
 // AUTH QUERIES
@@ -40,8 +35,7 @@ export const useCreateUserAccount = () => {
 
 export const useSignInAccount = () => {
   return useMutation({
-    mutationFn: (user: { email: string; password: string }) =>
-      signInAccount(user),
+    mutationFn: (user: { email: string; password: string }) => signInAccount(user),
   });
 };
 
@@ -58,15 +52,16 @@ export const useSignOutAccount = () => {
 export const useGetPosts = () => {
   return useInfiniteQuery({
     queryKey: [QUERY_KEYS.GET_INFINITE_POSTS],
-    queryFn: getInfinitePosts as any,
-    getNextPageParam: (lastPage: any) => {
+    queryFn: getInfinitePosts,
+    //@ts-expect-error we disable this
+    getNextPageParam: (lastPage) => {
       // If there's no data, there are no more pages.
       if (lastPage && lastPage.documents.length === 0) {
         return null;
       }
 
       // Use the $id of the last document as the cursor.
-      const lastId = lastPage.documents[lastPage.documents.length - 1].$id;
+      const lastId = lastPage?.documents[lastPage.documents.length - 1].$id;
       return lastId;
     },
   });
@@ -143,13 +138,8 @@ export const useDeletePost = () => {
 export const useLikePost = () => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: ({
-      postId,
-      likesArray,
-    }: {
-      postId: string;
-      likesArray: string[];
-    }) => likePost(postId, likesArray),
+    mutationFn: ({ postId, likesArray }: { postId: string; likesArray: string[] }) =>
+      likePost(postId, likesArray),
     onSuccess: (data) => {
       queryClient.invalidateQueries({
         queryKey: [QUERY_KEYS.GET_POST_BY_ID, data?.$id],
